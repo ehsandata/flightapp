@@ -6,10 +6,11 @@ import './Auth.css';
 const LoginPage = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError(''); // Clear previous errors
         try {
             const response = await fetch('/api/auth/login', {
                 method: 'POST',
@@ -24,11 +25,11 @@ const LoginPage = () => {
                 console.log("Login successful:", data);
                 navigate('/search');
             } else {
-                alert(data.message || "Login failed");
+                setError(data.message || "Login failed");
             }
         } catch (error) {
             console.error("Login error:", error);
-            alert("An error occurred during login");
+            setError("An error occurred during login");
         }
     };
 
@@ -68,6 +69,7 @@ const LoginPage = () => {
                             required
                         />
                     </div>
+                    {error && <div style={{ color: 'red', marginTop: '10px', fontSize: '14px' }}>{error}</div>}
 
                     <button type="submit" className="auth-btn btn-primary">
                         Sign In
