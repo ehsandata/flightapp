@@ -58,6 +58,33 @@ const FlightSearch = ({ onSearch }) => {
         setActiveField(null);
     };
 
+    const handleLocationClick = () => {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                const { latitude, longitude } = position.coords;
+                const response = await fetch(
+                    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+                );
+                const data = await response.json();
+                if (data.city) {
+                    setOrigin(data.city);
+                } else if (data.locality) {
+                    setOrigin(data.locality);
+                }
+            } catch (error) {
+                console.error("Error fetching location:", error);
+            }
+        }, (error) => {
+            console.error("Geolocation error:", error);
+            alert("Unable to retrieve your location");
+        });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (destination && date) {
@@ -113,7 +140,13 @@ const FlightSearch = ({ onSearch }) => {
                 <div className="input-group">
                     <label>From</label>
                     <div className="input-wrapper">
-                        <MapPin size={18} className="input-icon" />
+                        <MapPin
+                            size={18}
+                            className="input-icon"
+                            style={{ cursor: 'pointer', pointerEvents: 'auto' }}
+                            onClick={handleLocationClick}
+                            title="Use my location"
+                        />
                         <input
                             type="text"
                             value={origin}
