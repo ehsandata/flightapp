@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 import { User } from './models/User.js';
 
 dotenv.config();
@@ -16,12 +17,28 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+const connectDB = async () => {
+    try {
+        const uri = process.env.MONGODB_URI;
+        if (!uri) {
+            console.warn('Warning: MONGODB_URI is not defined. Database features will not work.');
+            return;
+        }
+        await mongoose.connect(uri);
+        console.log('Connected to MongoDB');
+    } catch (err) {
+        console.error('MongoDB connection error:', err);
+        // Do not exit process, allow server to start without DB
+    }
+};
+
+connectDB();
 
 // API Routes
 app.post('/api/auth/register', async (req, res) => {
+    if (mongoose.connection.readyState !== 1) {
+        return res.status(503).json({ message: 'Database not available' });
+    }
     try {
         const { firstName, lastName, email, phone, password } = req.body;
 
@@ -48,6 +65,9 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 app.post('/api/auth/login', async (req, res) => {
+    if (mongoose.connection.readyState !== 1) {
+        return res.status(503).json({ message: 'Database not available' });
+    }
     try {
         const { email, password } = req.body;
 
@@ -76,15 +96,31 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
+// Health Check
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', dbState: mongoose.connection.readyState });
+});
+
 // Serve static files in production
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distPath = path.join(__dirname, '../dist');
 
+console.log('Serving static files from:', distPath);
+
+if (!fs.existsSync(distPath)) {
+    console.error('Error: dist directory not found. Run `npm run build` first.');
+}
+
 app.use(express.static(distPath));
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
+app.get(/.*/, (req, res) => {
+    const indexPath = path.join(distPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).send('Application not built. Please run build command.');
+    }
 });
 
 app.listen(PORT, () => {
