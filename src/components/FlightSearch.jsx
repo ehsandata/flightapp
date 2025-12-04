@@ -58,26 +58,49 @@ const FlightSearch = ({ onSearch }) => {
         setActiveField(null);
     };
 
+    // Haversine formula to calculate distance between two points
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371; // Radius of the earth in km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in km
+    };
+
     const handleLocationClick = () => {
         if (!navigator.geolocation) {
             alert("Geolocation is not supported by your browser");
             return;
         }
 
-        navigator.geolocation.getCurrentPosition(async (position) => {
+        navigator.geolocation.getCurrentPosition((position) => {
             try {
                 const { latitude, longitude } = position.coords;
-                const response = await fetch(
-                    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-                );
-                const data = await response.json();
-                if (data.city) {
-                    setOrigin(data.city);
-                } else if (data.locality) {
-                    setOrigin(data.locality);
+
+                let nearestAirport = null;
+                let minDistance = Infinity;
+
+                airports.forEach(airport => {
+                    if (airport.lat && airport.lon) {
+                        const distance = calculateDistance(latitude, longitude, airport.lat, airport.lon);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            nearestAirport = airport;
+                        }
+                    }
+                });
+
+                if (nearestAirport) {
+                    setOrigin(`${nearestAirport.city} (${nearestAirport.code})`);
+                } else {
+                    alert("No nearby airports found in our database.");
                 }
             } catch (error) {
-                console.error("Error fetching location:", error);
+                console.error("Error calculating nearest airport:", error);
             }
         }, (error) => {
             console.error("Geolocation error:", error);
