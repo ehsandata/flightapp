@@ -21,15 +21,38 @@ const RegisterPage = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
-        // TODO: Implement registration logic with backend
-        console.log("Register with:", formData);
-        navigate('/search');
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    password: formData.password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Registration successful! Please login.");
+                navigate('/login');
+            } else {
+                alert(data.message || "Registration failed");
+            }
+        } catch (error) {
+            console.error("Registration error:", error);
+            alert("An error occurred during registration");
+        }
     };
 
     return (

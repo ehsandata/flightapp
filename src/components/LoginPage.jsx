@@ -8,11 +8,28 @@ const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // TODO: Implement actual login logic with backend
-        console.log("Login with:", email, password);
-        navigate('/search');
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // TODO: Store user data/token
+                console.log("Login successful:", data);
+                navigate('/search');
+            } else {
+                alert(data.message || "Login failed");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("An error occurred during login");
+        }
     };
 
     const handleGuestAccess = () => {
