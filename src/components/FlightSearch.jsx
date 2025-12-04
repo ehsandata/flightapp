@@ -161,7 +161,6 @@ const FlightSearch = ({ onSearch }) => {
                 </div>
 
                 <div className="input-group">
-                    <label>From</label>
                     <div className="input-wrapper">
                         <MapPin
                             size={18}
@@ -194,7 +193,6 @@ const FlightSearch = ({ onSearch }) => {
                 </div>
 
                 <div className="input-group">
-                    <label>To</label>
                     <div className="input-wrapper">
                         <MapPin size={18} className="input-icon" />
                         <input
