@@ -221,14 +221,16 @@ const FlightSearch = ({ onSearch }) => {
                         <label>Adults (12+)</label>
                         <div className="input-wrapper">
                             <Users size={18} className="input-icon" />
-                            <input
-                                type="number"
-                                min="1"
-                                max="9"
+                            <select
                                 value={adults}
-                                onChange={(e) => setAdults(parseInt(e.target.value) || 1)}
+                                onChange={(e) => setAdults(parseInt(e.target.value))}
+                                className="select-input"
                                 required
-                            />
+                            >
+                                {[...Array(9)].map((_, i) => (
+                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
 
@@ -236,13 +238,15 @@ const FlightSearch = ({ onSearch }) => {
                         <label>Children (&lt;12)</label>
                         <div className="input-wrapper">
                             <Users size={18} className="input-icon" />
-                            <input
-                                type="number"
-                                min="0"
-                                max="9"
+                            <select
                                 value={children}
-                                onChange={(e) => setChildren(parseInt(e.target.value) || 0)}
-                            />
+                                onChange={(e) => setChildren(parseInt(e.target.value))}
+                                className="select-input"
+                            >
+                                {[...Array(10)].map((_, i) => (
+                                    <option key={i} value={i}>{i}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                 </div>
