@@ -70,7 +70,7 @@ const LoginPage = () => {
                         <div className="success-icon-container">
                             <Check className="success-icon" />
                         </div>
-                        <h2 className="success-message">Welcome Back!</h2>
+                        <h2 className="success-message">Welcome Back, {JSON.parse(localStorage.getItem('user')).firstName} {JSON.parse(localStorage.getItem('user')).lastName}!</h2>
                         <p className="success-submessage">Redirecting to your dashboard...</p>
                     </div>
                 ) : (
