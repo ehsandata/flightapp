@@ -83,7 +83,6 @@ const LoginPage = () => {
 
                         <form className="auth-form" onSubmit={handleLogin}>
                             <div className="form-group">
-                                <label>Email Address</label>
                                 <input
                                     type="email"
                                     className="form-input"
@@ -94,7 +93,6 @@ const LoginPage = () => {
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Password</label>
                                 <input
                                     type="password"
                                     className="form-input"
