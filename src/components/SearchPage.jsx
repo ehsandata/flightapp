@@ -52,7 +52,7 @@ function SearchPage() {
     return (
         <div className="container" style={{ position: 'relative' }}>
             {user && (
-                <div className="user-header">
+                <div className={`user-header ${menuOpen ? 'menu-open' : ''}`}>
                     <div className="user-profile" onClick={() => setMenuOpen(!menuOpen)}>
                         <div className="user-avatar">
                             {user.firstName[0]}{user.lastName[0]}
