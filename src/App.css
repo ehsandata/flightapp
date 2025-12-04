@@ -138,3 +138,24 @@
     transform: translateY(0);
   }
 }
+
+@media (max-width: 768px) {
+  .user-header {
+    top: 10px;
+    right: 10px;
+  }
+
+  .user-profile {
+    padding: 6px 12px;
+  }
+
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .user-name {
+    font-size: 13px;
+  }
+}
