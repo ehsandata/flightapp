@@ -1,0 +1,214 @@
+.flight-search-card {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+}
+
+.icon-logo {
+    transform: rotate(-45deg);
+}
+
+.header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.input-group {
+    margin-bottom: 1.25rem;
+    width: 100%;
+}
+
+.row-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.row-group .input-group {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 0;
+    /* Prevent overflow */
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 2.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    color: var(--text-main);
+    background: var(--background);
+    transition: all 0.2s;
+    appearance: none;
+    /* Remove default arrow for select */
+}
+
+.input-wrapper select {
+    cursor: pointer;
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: var(--surface);
+}
+
+.suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    margin-top: 0.5rem;
+    max-height: 240px;
+    overflow-y: auto;
+    z-index: 10;
+    list-style: none;
+    padding: 0.5rem 0;
+}
+
+.suggestions-list li {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.suggestions-list li:hover {
+    background: var(--background);
+}
+
+.suggestion-code {
+    font-weight: 700;
+    color: var(--primary);
+    width: 3rem;
+}
+
+.suggestion-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.suggestion-city {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.875rem;
+}
+
+.suggestion-name {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.search-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 0.1s, box-shadow 0.2s;
+    margin-top: 0.5rem;
+}
+
+.search-btn:hover {
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    transform: translateY(-1px);
+}
+
+.search-btn:active {
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.trip-type-selector {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.trip-type-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+.trip-type-option:hover {
+    color: var(--text-main);
+}
+
+.trip-type-option.active {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.trip-type-option input {
+    accent-color: var(--primary);
+    width: 1.1rem;
+    height: 1.1rem;
+    cursor: pointer;
+    margin: 0;
+}
