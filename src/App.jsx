@@ -56,7 +56,7 @@ function App() {
         <FlightResults results={results} onBack={handleBack} />
       )}
 
-      <div style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--text-muted)', fontWeight: '500' }}>
+      <div style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--text-muted)', fontWeight: '500' }}>
         Made By <span style={{ color: '#ef4444' }}>❤️</span> - Mojtaba
       </div>
 
